@@ -261,15 +261,15 @@ class Processor(object):
         validation will write mistaken samples to files and make scores.
         """
 
-        if self.args.gpu:
-            self.model = torch.load(model_path)
-            self.dataset = torch.load(dataset_path)
-        else:
-            self.model = torch.load(model_path, map_location=torch.device('cpu'))
-            self.dataset = torch.load(dataset_path, map_location=torch.device('cpu'))
+        if model_path is not None:
+            self.model = torch.load(model_path) if self.args.gpu \
+                else torch.load(model_path, map_location=torch.device('cpu'))
+        if dataset_path is not None:
+            self.dataset = torch.load(dataset_path) if self.args.gpu \
+                else torch.load(dataset_path, map_location=torch.device('cpu'))
 
-        self.dataset.quick_build_test(self.args.data_dir, 'test.txt')
-        mylogger.info('load {} to test'.format(self.args.data_dir))
+        # self.dataset.quick_build_test(self.args.data_dir, 'test.txt')
+        # mylogger.info('load {} to test'.format(self.args.data_dir))
 
         # Get the sentence list in test dataset.
         # sent_list = dataset.test_sentence
@@ -315,7 +315,11 @@ class Processor(object):
                         fw.write(w + '\t' + r_slot + '\t' + p_slot + '\n')
                     fw.write(r_intent + '\t' + p_intent + '\n\n')
 
-        return slot_f1, intent_acc, sent_acc
+        return {
+            "slot_f1": slot_f1,
+            "intent_acc": intent_acc,
+            "sent_acc": sent_acc
+        }
 
     def prediction(self, mode):
         self.model.eval()

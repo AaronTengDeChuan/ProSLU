@@ -23,21 +23,49 @@ if __name__ == "__main__":
             torch.backends.cudnn.deterministic = True
             torch.backends.cudnn.benchmark = False
 
-    # Instantiate a dataset object.
-    dataset = DatasetManager(args)
-    dataset.quick_build()
+    if not args.do_eval:
+        # Instantiate a dataset object.
+        dataset = DatasetManager(args)
+        dataset.quick_build()
 
-    # Instantiate a network model object.
-    model = ModelManager(
-        args, len(dataset.word_alphabet),
-        len(dataset.slot_alphabet),
-        len(dataset.intent_alphabet))
+        # Instantiate a network model object.
+        model = ModelManager(
+            args, len(dataset.word_alphabet),
+            len(dataset.slot_alphabet),
+            len(dataset.intent_alphabet))
 
-    # To train and evaluate the models.
-    process = Processor(dataset, model, args)
-    process.train()
+        # To train and evaluate the models.
+        process = Processor(dataset, model, args)
+        process.train()
 
-    mylogger.info('\nAccepted performance: ' + str(process.validate(
-        os.path.join(args.save_dir, "models/model.pkl"),
-        os.path.join(args.save_dir, "models/dataset.pkl")
-    )) + " at test dataset;\n")
+        test_result = process.validate(
+            os.path.join(args.save_dir, "model/model.pkl"),
+            os.path.join(args.save_dir, "model/dataset.pkl")
+        )
+        mylogger.info('\nAccepted performance: ' +
+                      " ; ".join([f"{k}={v}" for k, v in test_result.items()]) +
+                      " at test dataset;\n")
+    else:
+        # for only evaluation
+        ## python train.py -de -ld "save/BERTSLU++/True_ELECTRA_8_0.4_0.0008_4e-05_64_128_2021-12-20\ 032603/model" -g -fs -es -uf -up -ui -mt ELECTRA -bs 8 -lr 0.0008 -blr 4e-05
+        assert args.load_dir is not None
+        # load dataset
+        dataset_path = os.path.join(args.load_dir, "dataset.pkl")
+        if args.gpu:
+            dataset = torch.load(dataset_path)
+        else:
+            dataset = torch.load(dataset_path, map_location=torch.device('cpu'))
+
+        # Instantiate a network model object.
+        model = ModelManager(
+            args, len(dataset.word_alphabet),
+            len(dataset.slot_alphabet),
+            len(dataset.intent_alphabet))
+
+        args = dataset.args
+        # load model during 'Processor.init'
+        process = Processor(dataset, model, args)
+
+        mylogger.info('\nAccepted performance: ' +
+                      " ; ".join([f"{k}={v}" for k, v in process.validate(None, None).items()]) +
+                      " at test dataset;\n")

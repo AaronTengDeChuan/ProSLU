@@ -46,6 +46,7 @@ parser.add_argument('--fit_log_dir', '-fld', required=False, default='logs/')
 parser.add_argument('--logging_steps', '-ls', type=int, default=10)
 
 # Training parameters.
+parser.add_argument('--do_eval', '-de', action='store_true', required=False)
 parser.add_argument('--num_epoch', '-ne', type=int, default=100)
 parser.add_argument('--batch_size', '-bs', type=int, default=8)
 parser.add_argument('--l2_penalty', '-lp', type=float, default=1e-6)
