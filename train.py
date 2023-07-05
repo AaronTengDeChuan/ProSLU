@@ -62,11 +62,10 @@ if __name__ == "__main__":
             len(dataset.slot_alphabet),
             len(dataset.intent_alphabet))
 
-        args = dataset.args
-        if "PretrainModel/bert" in args.model_type_path:
-            args.model_type_path = f"./{args.model_type_path}"
+        loaded_args = dataset.args
+        loaded_args.model_type_path = args.model_type_path
         # load model during 'Processor.init'
-        process = Processor(dataset, model, args)
+        process = Processor(dataset, model, loaded_args)
 
         # load model during 'process.validate'
         model_path = os.path.join(args.load_dir, "model.pkl")
