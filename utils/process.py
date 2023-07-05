@@ -60,12 +60,21 @@ class Processor(object):
             )
 
         if self.load_dir:
-            if self.args.gpu:
-                mylogger.info("MODEL {} LOADED".format(str(self.load_dir)))
-                self.model = torch.load(os.path.join(self.load_dir, 'model.pkl'))
-            else:
-                mylogger.info("MODEL {} LOADED".format(str(self.load_dir)))
-                self.model = torch.load(os.path.join(self.load_dir, 'model.pkl'), map_location=torch.device('cpu'))
+            mylogger.info("MODEL {} LOADED".format(str(self.load_dir)))
+            self.load_model(os.path.join(self.load_dir, 'model.pkl'))
+            # if self.args.gpu:
+            #     self.model = torch.load(os.path.join(self.load_dir, 'model.pkl'))
+            # else:
+            #     self.model = torch.load(os.path.join(self.load_dir, 'model.pkl'), map_location=torch.device('cpu'))
+
+
+    def load_model(self, model_file_path):
+        if model_file_path.endswith('.pkl'):
+            loaded_model = torch.load(model_file_path)
+            self.model.load_state_dict(loaded_model.state_dict())
+        else:
+            model_state_dict = torch.load(model_file_path)
+            self.model.load_state_dict(model_state_dict)
 
     def tokenize_batch(self, word_batch):
         piece_batch = []
@@ -263,8 +272,9 @@ class Processor(object):
         """
 
         if model_path is not None:
-            self.model = torch.load(model_path) if self.args.gpu \
-                else torch.load(model_path, map_location=torch.device('cpu'))
+            self.load_model(model_path)
+            # self.model = torch.load(model_path) if self.args.gpu \
+            #     else torch.load(model_path, map_location=torch.device('cpu'))
         if dataset_path is not None:
             self.dataset = torch.load(dataset_path) if self.args.gpu \
                 else torch.load(dataset_path, map_location=torch.device('cpu'))
