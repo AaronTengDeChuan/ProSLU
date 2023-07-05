@@ -63,6 +63,8 @@ if __name__ == "__main__":
             len(dataset.intent_alphabet))
 
         args = dataset.args
+        if "PretrainModel/bert" in args.model_type_path:
+            args.model_type_path = f"./{args.model_type_path}"
         # load model during 'Processor.init'
         process = Processor(dataset, model, args)
 

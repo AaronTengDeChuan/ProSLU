@@ -115,7 +115,7 @@ if args.model_type != 'LSTM':
         'RoBERTa': "PretrainModel/bert/chinese-roberta-wwm-ext",
         'BERT': "PretrainModel/bert/chinese-bert-wwm-ext",
         'XLNet': "PretrainModel/bert/chinese-xlnet-base",
-        'ELECTRA': "PretrainModel/bert/chinese-electra-180g-base-discriminator",
+        'ELECTRA': "./PretrainModel/bert/chinese-electra-180g-base-discriminator",
     }
 
     args.model_type_path = model_type[args.model_type]
