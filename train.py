@@ -68,6 +68,8 @@ if __name__ == "__main__":
         # load model during 'Processor.init'
         process = Processor(dataset, model, args)
 
+        # load model during 'process.validate'
+        model_path = os.path.join(args.load_dir, "model.pkl")
         mylogger.info('\nAccepted performance: ' +
-                      " ; ".join([f"{k}={v}" for k, v in process.validate(None, None).items()]) +
+                      " ; ".join([f"{k}={v}" for k, v in process.validate(model_path, None).items()]) +
                       " at test dataset;\n")

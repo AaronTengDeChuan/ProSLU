@@ -25,6 +25,7 @@ class Processor(object):
 
         self.criterion = nn.NLLLoss()
         if self.args.use_pretrained:
+            mylogger.info(f"Loading pretrained {args.model_type} tokenizer from {args.model_type_path} ...")
 
             if self.args.model_type == 'BERT' or self.args.model_type == 'RoBERTa':
                 self.tokenizer = BertTokenizer.from_pretrained(args.model_type_path)
