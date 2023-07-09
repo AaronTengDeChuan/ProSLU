@@ -4,7 +4,7 @@ import os
 import re
 import sys
 import orjson
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 
 def rebuild_json(json_file):
     UP = {
@@ -28,6 +28,9 @@ def rebuild_json(json_file):
 
     rebuilt_data = OrderedDict()
 
+    # count the number of different columns
+    columns = Counter()
+
     for data_id, data_dict in data.items():
         # align UP / CA items
         up_dict, ca_dict = {}, {}
@@ -45,6 +48,14 @@ def rebuild_json(json_file):
         # divide single-line KG into different items starting with "subject："
         subjects = data_dict.pop("KG").split("；subject：")
         subjects = [subj if subj.startswith("subject：") else f"subject：{subj}" for subj in subjects]
+        kb = []
+        # divide each item into different triples
+        for subject in subjects:
+            items = re.split(r"，(\w+)：", '，' + subject)[1:]
+            assert len(items) % 2 == 0
+            kb.append(dict(zip(items[::2], items[1::2])))
+            columns.update(items[::2])
+
         # print(len(subjects), orjson.dumps(subjects, option=orjson.OPT_INDENT_2).decode())
         # exit(0)
 
@@ -52,11 +63,14 @@ def rebuild_json(json_file):
         rebuilt_item["用户话语"] = data_dict.pop("用户话语")
         rebuilt_item["intent"] = data_dict.pop("intent")
         rebuilt_item["slot"] = data_dict.pop("slot")
-        rebuilt_item["KG"] = subjects
+        rebuilt_item["KG"] = kb
         rebuilt_item["UP"] = up_dict
         rebuilt_item["CA"] = ca_dict
         assert data_dict == {}
         rebuilt_data[data_id] = rebuilt_item
+
+    # print(orjson.dumps(columns.most_common()[::-1][:20], option=orjson.OPT_INDENT_2).decode())
+    print(orjson.dumps(columns.most_common(10), option=orjson.OPT_INDENT_2).decode())
 
     return rebuilt_data
 
