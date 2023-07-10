@@ -31,6 +31,9 @@ def rebuild_json(json_file):
     # count the number of different columns
     columns = Counter()
 
+    # record intent and slots in corresponding intent
+    intent2slots = OrderedDict()
+
     for data_id, data_dict in data.items():
         # align UP / CA items
         up_dict, ca_dict = {}, {}
@@ -69,10 +72,23 @@ def rebuild_json(json_file):
         assert data_dict == {}
         rebuilt_data[data_id] = rebuilt_item
 
+        intent_list, slot_label_list = zip(*[re.split(r'\.|-', label)[1:] if label != "O" else ['O', 'O'] for label in rebuilt_item["slot"]])
+        intent_set = set(intent_list) - {'O'}
+        prev_slot = None
+        slot_list = []
+        for cur_slot_lable in slot_label_list:
+            if cur_slot_lable != prev_slot:
+                if cur_slot_lable != 'O':
+                    slot_list.append(cur_slot_lable)
+                prev_slot = cur_slot_lable
+
+        assert len(intent_set) == 1
+        intent2slots.setdefault(rebuilt_item["intent"], Counter()).update(slot_list + ['Num_Intent'])
+
     # print(orjson.dumps(columns.most_common()[::-1][:20], option=orjson.OPT_INDENT_2).decode())
     print(orjson.dumps(columns.most_common(10), option=orjson.OPT_INDENT_2).decode())
 
-    return rebuilt_data
+    return rebuilt_data, dict(sorted([(k, OrderedDict(v.most_common())) for k, v in intent2slots.items()], key=lambda x: x[1]['Num_Intent'], reverse=True))
 
 
 if __name__ == '__main__':
@@ -80,7 +96,7 @@ if __name__ == '__main__':
     for split in ["train", "dev", "test"]:
         json_file = os.path.join(dataset_dir, f"{split}.json")
 
-        rebuilt_json = rebuild_json(json_file)
+        rebuilt_json, intent2slots = rebuild_json(json_file)
 
         with open(os.path.join(dataset_dir, f"{split}_rebuild.json"), "w", encoding="utf-8") as f:
-            f.write(orjson.dumps(rebuilt_json, option=orjson.OPT_INDENT_2).decode())
+            f.write(orjson.dumps([intent2slots, rebuilt_json], option=orjson.OPT_INDENT_2).decode())
