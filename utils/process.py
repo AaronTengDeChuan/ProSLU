@@ -61,7 +61,7 @@ class Processor(object):
 
         if self.load_dir:
             mylogger.info("MODEL {} LOADED".format(str(self.load_dir)))
-            self.load_model(os.path.join(self.load_dir, 'model.pkl'))
+            self.load_model(os.path.join(self.load_dir, ModelFileName))
             # if self.args.gpu:
             #     self.model = torch.load(os.path.join(self.load_dir, 'model.pkl'))
             # else:
@@ -235,7 +235,8 @@ class Processor(object):
                 if not os.path.exists(model_save_dir):
                     os.mkdir(model_save_dir)
 
-                torch.save(self.model, os.path.join(model_save_dir, "model.pkl"))
+                # torch.save(self.model, os.path.join(model_save_dir, "model.pkl"))
+                torch.save(self.model.state_dict(), os.path.join(model_save_dir, ModelFileName))
                 torch.save(self.dataset, os.path.join(model_save_dir, 'dataset.pkl'))
 
                 time_con = time.time() - time_start

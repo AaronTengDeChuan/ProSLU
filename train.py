@@ -39,7 +39,7 @@ if __name__ == "__main__":
         process.train()
 
         test_result = process.validate(
-            os.path.join(args.save_dir, "model/model.pkl"),
+            os.path.join(args.save_dir, f"model/{ModelFileName}"),
             os.path.join(args.save_dir, "model/dataset.pkl")
         )
         mylogger.info('\nAccepted performance: ' +
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         process = Processor(dataset, model, loaded_args)
 
         # load model during 'process.validate'
-        model_path = os.path.join(args.load_dir, "model.pkl")
+        model_path = os.path.join(args.load_dir, ModelFileName)
         mylogger.info('\nAccepted performance: ' +
                       " ; ".join([f"{k}={v}" for k, v in process.validate(model_path, None).items()]) +
                       " at test dataset;\n")

@@ -119,3 +119,6 @@ if args.model_type != 'LSTM':
     }
 
     args.model_type_path = model_type[args.model_type]
+
+# model file name for saving
+ModelFileName = 'model.pt'
