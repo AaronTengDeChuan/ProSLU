@@ -69,12 +69,15 @@ class Processor(object):
 
 
     def load_model(self, model_file_path):
-        if model_file_path.endswith('.pkl'):
-            loaded_model = torch.load(model_file_path)
-            self.model.load_state_dict(loaded_model.state_dict())
-        else:
+        file_exist = os.path.exists(model_file_path)
+        if file_exist and model_file_path.endswith('.pt'):
             model_state_dict = torch.load(model_file_path)
             self.model.load_state_dict(model_state_dict)
+        else:
+            if not file_exist:
+                model_file_path = model_file_path.rsplit('.', maxsplit=1)[0] + '.pkl'
+            loaded_model = torch.load(model_file_path)
+            self.model.load_state_dict(loaded_model.state_dict())
 
     def tokenize_batch(self, word_batch):
         piece_batch = []
