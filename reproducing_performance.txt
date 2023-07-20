@@ -1,0 +1,18 @@
+General SLU Model ++ ELECTRA
+Accepted performance: slot_f1=0.8018675226145316 ; intent_acc=0.8210922787193974 ; sent_acc=0.7627118644067796 at test dataset;
+Accepted performance: slot_f1=0.8206474190726158 ; intent_acc=0.8493408662900188 ; sent_acc=0.7890772128060264 at test dataset;
+Accepted performance: slot_f1=0.8330897398421515 ; intent_acc=0.8380414312617702 ; sent_acc=0.8041431261770244 at test dataset;
+Accepted performance: slot_f1=0.7981330221703616 ; intent_acc=0.8173258003766478 ; sent_acc=0.775894538606403 at test dataset; (patience=20)
+Accepted performance: slot_f1=0.8185530921820302 ; intent_acc=0.8587570621468926 ; sent_acc=0.7871939736346516 at test dataset;
+Accepted performance: slot_f1=0.8571428571428572 ; intent_acc=0.8738229755178908 ; sent_acc=0.8342749529190208 at test dataset;
+Accepted performance: slot_f1=0.8133216476774758 ; intent_acc=0.8380414312617702 ; sent_acc=0.783427495291902 at test dataset;
+Accepted performance: slot_f1=0.8200641586468358 ; intent_acc=0.847457627118644 ; sent_acc=0.7909604519774012 at test dataset;
+
+
+General SLU Model ++
+Accepted performance: slot_f1=0.7576112412177985 ; intent_acc=0.7740112994350282 ; sent_acc=0.7175141242937854 at test dataset;
+Accepted performance: slot_f1=0.818367943843229 ; intent_acc=0.8418079096045198 ; sent_acc=0.7777777777777778 at test dataset;
+Accepted performance: slot_f1=0.8114922310172971 ; intent_acc=0.8436911487758946 ; sent_acc=0.7382297551789078 at test dataset;
+Accepted performance: slot_f1=0.8014039192746417 ; intent_acc=0.8248587570621468 ; sent_acc=0.7608286252354048 at test dataset;
+Accepted performance: slot_f1=0.7916910473961382 ; intent_acc=0.839924670433145 ; sent_acc=0.7476459510357816 at test dataset;
+Accepted performance: slot_f1=0.804099560761347 ; intent_acc=0.8229755178907722 ; sent_acc=0.7645951035781544 at test dataset;
