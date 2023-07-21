@@ -16,3 +16,5 @@ Accepted performance: slot_f1=0.8114922310172971 ; intent_acc=0.8436911487758946
 Accepted performance: slot_f1=0.8014039192746417 ; intent_acc=0.8248587570621468 ; sent_acc=0.7608286252354048 at test dataset;
 Accepted performance: slot_f1=0.7916910473961382 ; intent_acc=0.839924670433145 ; sent_acc=0.7476459510357816 at test dataset;
 Accepted performance: slot_f1=0.804099560761347 ; intent_acc=0.8229755178907722 ; sent_acc=0.7645951035781544 at test dataset;
+Accepted performance: slot_f1=0.743124634289058 ; intent_acc=0.7721280602636534 ; sent_acc=0.7137476459510358 at test dataset;
+Accepted performance: slot_f1=0.8155737704918034 ; intent_acc=0.8531073446327684 ; sent_acc=0.775894538606403 at test dataset;
