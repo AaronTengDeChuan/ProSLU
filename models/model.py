@@ -117,9 +117,10 @@ class ModelManager(nn.Module):
         else:
             return x
 
-    def match_token(self, hiddens, span):
+    def match_token(self, hiddens, span, seq_lens):
+        max_len = max(seq_lens)
         # take the first subword hidden as the represenation for each token in the utterance
-        hiddens_span = self._cuda(torch.zeros_like(hiddens))
+        hiddens_span = torch.zeros(hiddens.size(0), max_len, hiddens.size(2)).to(hiddens)
         for i in range(len(span)):
             for idx, span_i in enumerate(span[i]):
                 hiddens_span[i][idx] = hiddens[i][span_i]
