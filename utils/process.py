@@ -5,7 +5,8 @@ import torch.nn as nn
 import torch.optim as optim
 from utils.config import *
 from tqdm import tqdm
-from transformers import BertTokenizer, XLNetTokenizer, ElectraTokenizer, ElectraTokenizerFast, AdamW
+from transformers import BertTokenizer, XLNetTokenizer, ElectraTokenizer, AdamW
+from transformers import BertTokenizerFast, XLNetTokenizerFast, ElectraTokenizerFast
 from utils import miulab
 
 
@@ -28,14 +29,13 @@ class Processor(object):
             mylogger.info(f"Loading pretrained {args.model_type} tokenizer from {args.model_type_path} ...")
 
             if self.args.model_type == 'BERT' or self.args.model_type == 'RoBERTa':
-                self.tokenizer = BertTokenizer.from_pretrained(args.model_type_path)
+                self.tokenizer = BertTokenizerFast.from_pretrained(args.model_type_path)
             elif self.args.model_type == 'XLNet':
-                self.tokenizer = XLNetTokenizer.from_pretrained(args.model_type_path)
+                self.tokenizer = XLNetTokenizerFast.from_pretrained(args.model_type_path)
             elif self.args.model_type == 'ELECTRA':
-                # self.tokenizer = ElectraTokenizer.from_pretrained(args.model_type_path)
                 self.tokenizer = ElectraTokenizerFast.from_pretrained(args.model_type_path)
             elif self.args.model_type == 'ALBERT':
-                self.tokenizer = BertTokenizer.from_pretrained(args.model_type_path)
+                self.tokenizer = BertTokenizerFast.from_pretrained(args.model_type_path)
 
             bert = list(map(id, self.model.encoder.parameters()))
             base_params = filter(lambda p: id(p) not in bert, self.model.parameters())
