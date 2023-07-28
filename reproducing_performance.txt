@@ -1,4 +1,4 @@
-General SLU Model ++ ELECTRA
+General SLU Model ++ ELECTRA with char-level tokenization
 Accepted performance: slot_f1=0.8018675226145316 ; intent_acc=0.8210922787193974 ; sent_acc=0.7627118644067796 at test dataset;
 Accepted performance: slot_f1=0.8206474190726158 ; intent_acc=0.8493408662900188 ; sent_acc=0.7890772128060264 at test dataset;
 Accepted performance: slot_f1=0.8330897398421515 ; intent_acc=0.8380414312617702 ; sent_acc=0.8041431261770244 at test dataset;
@@ -7,6 +7,17 @@ Accepted performance: slot_f1=0.8185530921820302 ; intent_acc=0.8587570621468926
 Accepted performance: slot_f1=0.8571428571428572 ; intent_acc=0.8738229755178908 ; sent_acc=0.8342749529190208 at test dataset;
 Accepted performance: slot_f1=0.8133216476774758 ; intent_acc=0.8380414312617702 ; sent_acc=0.783427495291902 at test dataset;
 Accepted performance: slot_f1=0.8200641586468358 ; intent_acc=0.847457627118644 ; sent_acc=0.7909604519774012 at test dataset;
+
+
+General SLU Model ++ ELECTRA with regular tokenization
+Accepted performance: slot_f1=0.8258328462887201 ; intent_acc=0.839924670433145 ; sent_acc=0.8116760828625236 at test dataset;
+Accepted performance: slot_f1=0.8178373651996502 ; intent_acc=0.8342749529190208 ; sent_acc=0.7890772128060264 at test dataset;
+Accepted performance: slot_f1=0.8330897398421515 ; intent_acc=0.8531073446327684 ; sent_acc=0.8135593220338984 at test dataset;
+Accepted performance: slot_f1=0.8063102541630149 ; intent_acc=0.8267419962335216 ; sent_acc=0.7890772128060264 at test dataset;
+Accepted performance: slot_f1=0.8129748684979544 ; intent_acc=0.8248587570621468 ; sent_acc=0.7928436911487758 at test dataset;
+Accepted performance: slot_f1=0.8353765323992994 ; intent_acc=0.8531073446327684 ; sent_acc=0.815442561205273 at test dataset;
+Accepted performance: slot_f1=0.8229105786090006 ; intent_acc=0.8286252354048964 ; sent_acc=0.7947269303201506 at test dataset;
+Accepted performance: slot_f1=0.8141437755698422 ; intent_acc=0.832391713747646 ; sent_acc=0.7947269303201506 at test dataset;
 
 
 General SLU Model ++
