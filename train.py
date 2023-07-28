@@ -64,6 +64,7 @@ if __name__ == "__main__":
 
         loaded_args = dataset.args
         loaded_args.model_type_path = args.model_type_path
+        loaded_args.word_level_pretrained = args.word_level_pretrained
         # load model during 'Processor.init'
         process = Processor(dataset, model, loaded_args)
 

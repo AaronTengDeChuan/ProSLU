@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 from utils.config import *
 from tqdm import tqdm
-from transformers import BertTokenizer, XLNetTokenizer, ElectraTokenizer, AdamW
+from transformers import BertTokenizer, XLNetTokenizer, ElectraTokenizer, ElectraTokenizerFast, AdamW
 from utils import miulab
 
 
@@ -32,7 +32,8 @@ class Processor(object):
             elif self.args.model_type == 'XLNet':
                 self.tokenizer = XLNetTokenizer.from_pretrained(args.model_type_path)
             elif self.args.model_type == 'ELECTRA':
-                self.tokenizer = ElectraTokenizer.from_pretrained(args.model_type_path)
+                # self.tokenizer = ElectraTokenizer.from_pretrained(args.model_type_path)
+                self.tokenizer = ElectraTokenizerFast.from_pretrained(args.model_type_path)
             elif self.args.model_type == 'ALBERT':
                 self.tokenizer = BertTokenizer.from_pretrained(args.model_type_path)
 
@@ -103,20 +104,26 @@ class Processor(object):
             text_sequences = ["".join(wl) for wl in word_batch]
             tokenized_texts = self.tokenizer(text_sequences,
                                              padding=False, truncation=False, return_tensors=None,
-                                             add_special_tokens=True, return_attention_mask=False,
+                                             add_special_tokens=True, return_offsets_mapping=True,
+                                             return_attention_mask=False,
                                              return_length=True, return_token_type_ids=False)
             # get mapping from char index to token index
             char_token_mappings = []
-            for i, text in enumerate(text_sequences):
-                tokens = self.tokenizer.convert_ids_to_tokens(tokenized_texts["input_ids"][i], skip_special_tokens=True)
-                restored_len = len("".join(tokens))
-                # TODO: when loading data files, replace whitespace in texts with a predefined rare character
-                assert restored_len == len(
-                    text), f"After running plm tokenizer, tokens '{tokens}'({restored_len}) " \
-                           f"does not match raw text '{text}'({len(text)})"
+            for i, offset_mapping in enumerate(tokenized_texts["offset_mapping"]):
                 char_token_mappings.append([])
-                for j, token in enumerate(tokens):
-                    char_token_mappings[-1].extend([j] * len(token))
+                token_idx = 0
+                for j, (start, end) in enumerate(offset_mapping):
+                    if start == end:
+                        continue
+                    else:
+                        char_token_mappings[-1].extend([token_idx] * (end - start))
+                        token_idx += 1
+                tokens = [t for t in self.tokenizer.convert_ids_to_tokens(tokenized_texts["input_ids"][i]) if t not in [
+                    self.tokenizer.pad_token, self.tokenizer.cls_token, self.tokenizer.sep_token]]
+                # TODO: how to represent whitespaces
+                # '我想用 iPad 搜索古龙的 离别钩' -> [(0, 1), (1, 2), (2, 3), (4, 8), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (15, 16), (16, 17), (17, 18)]
+                assert len(text_sequences[i]) == len(char_token_mappings[-1]), \
+                    f"char_token_mappings length {len(char_token_mappings[-1])} does not match text length {len(text_sequences[i])}: '{text_sequences[i]}' -> '{tokens}'"
             return tokenized_texts["input_ids"], char_token_mappings
 
     def padding_index(self, data):
