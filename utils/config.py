@@ -88,15 +88,17 @@ else:
     args.model_type = 'LSTM'
 if args.use_info:
     prefix += '++'
-args.save_dir = os.path.join('save', prefix, '{}_{}_{}_{}_{}_{}_{}_{}_{}'.format(args.use_info,
-                                                                                 args.model_type,
-                                                                                 args.batch_size,
-                                                                                 args.dropout_rate,
-                                                                                 args.learning_rate,
-                                                                                 args.bert_learning_rate,
-                                                                                 args.word_embedding_dim,
-                                                                                 args.info_embedding_dim,
-                                                                                 timestamp))
+args.save_dir = os.path.join('save', prefix, '{}_{}_{}_{}_{}_{}_{}_{}_{}_{}'.format(
+    args.use_info,
+    args.model_type,
+    f"wlp={args.word_level_pretrained}",
+    args.batch_size,
+    args.dropout_rate,
+    args.learning_rate,
+    args.bert_learning_rate,
+    args.word_embedding_dim,
+    args.info_embedding_dim,
+    timestamp))
 
 os.makedirs(args.save_dir, exist_ok=True)
 log_path = os.path.join(args.save_dir, "config.json")

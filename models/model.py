@@ -156,7 +156,7 @@ class ModelManager(nn.Module):
             hiddens = self.encoder(word_tensor)
             sent_rep = hiddens[:, 0]
             hiddens = hiddens[:, 1:-1]
-            hiddens = self.match_token(hiddens, span)
+            hiddens = self.match_token(hiddens, span, seq_lens)
         else:
             word_tensor = self.embedding(text)
             lstm_hiddens = self.encoder(word_tensor, seq_lens)
