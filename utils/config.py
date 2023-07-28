@@ -39,6 +39,8 @@ parser.add_argument('--gpu', '-g', action='store_true', help='use gpu', required
 parser.add_argument("--use_info", '-ui', help='use info', action='store_true', required=False)
 parser.add_argument('--use_pretrained', '-up', action='store_true', help='use pretrained models', required=False)
 parser.add_argument('--model_type', '-mt', type=str, default="ELECTRA")
+parser.add_argument('--word_level_pretrained', '-wlp', action='store_true',
+                    help='pretrained models encode user utterances in word level', required=False)
 parser.add_argument('--max_length', '-ml', type=int, help='max length for KG', default=256)
 parser.add_argument('--early_stop', '-es', action='store_true', required=False)
 parser.add_argument('--patience', '-pa', type=int, default=10)

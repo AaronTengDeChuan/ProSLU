@@ -79,24 +79,45 @@ class Processor(object):
             loaded_model = torch.load(model_file_path)
             self.model.load_state_dict(loaded_model.state_dict())
 
-    def tokenize_batch(self, word_batch):
-        piece_batch = []
-        piece_span = []
+    def tokenize_batch(self, word_batch, char_level=True):
+        if char_level:
+            piece_batch = []
+            piece_span = []
 
-        for sent_i in range(0, len(word_batch)):
-            piece_batch.append([self.tokenizer.cls_token_id])
-            piece_span.append([])
-            count = 0
+            for sent_i in range(0, len(word_batch)):
+                piece_batch.append([self.tokenizer.cls_token_id])
+                piece_span.append([])
+                count = 0
 
-            for word_i in range(0, len(word_batch[sent_i])):
-                word = word_batch[sent_i][word_i]
-                piece_list = self.tokenizer.convert_tokens_to_ids([word])
-                piece_batch[-1].extend(piece_list)
-                piece_span[-1].append(count)
-                count += len(piece_list)
+                for word_i in range(0, len(word_batch[sent_i])):
+                    word = word_batch[sent_i][word_i]
+                    piece_list = self.tokenizer.convert_tokens_to_ids([word])
+                    piece_batch[-1].extend(piece_list)
+                    piece_span[-1].append(count)
+                    count += len(piece_list)
 
-            piece_batch[-1].append(self.tokenizer.sep_token_id)
-        return piece_batch, piece_span
+                piece_batch[-1].append(self.tokenizer.sep_token_id)
+
+            return piece_batch, piece_span
+        else:
+            text_sequences = ["".join(wl) for wl in word_batch]
+            tokenized_texts = self.tokenizer(text_sequences,
+                                             padding=False, truncation=False, return_tensors=None,
+                                             add_special_tokens=True, return_attention_mask=False,
+                                             return_length=True, return_token_type_ids=False)
+            # get mapping from char index to token index
+            char_token_mappings = []
+            for i, text in enumerate(text_sequences):
+                tokens = self.tokenizer.convert_ids_to_tokens(tokenized_texts["input_ids"][i], skip_special_tokens=True)
+                restored_len = len("".join(tokens))
+                # TODO: when loading data files, replace whitespace in texts with a predefined rare character
+                assert restored_len == len(
+                    text), f"After running plm tokenizer, tokens '{tokens}'({restored_len}) " \
+                           f"does not match raw text '{text}'({len(text)})"
+                char_token_mappings.append([])
+                for j, token in enumerate(tokens):
+                    char_token_mappings[-1].extend([j] * len(token))
+            return tokenized_texts["input_ids"], char_token_mappings
 
     def padding_index(self, data):
         len_list = [len(piece) for piece in data]
@@ -105,8 +126,8 @@ class Processor(object):
             data[index].extend([self.tokenizer.pad_token_id] * (max_len - len_list[index]))
         return data
 
-    def padding_text(self, data):
-        data, span = self.tokenize_batch(data)
+    def padding_text(self, data, char_level=True):
+        data, span = self.tokenize_batch(data, char_level=char_level)
         data = self.padding_index(data)
         return data, span
 
@@ -152,7 +173,8 @@ class Processor(object):
                                                                        self.dataset.word_alphabet.get_index(['；'])[0],
                                                                        max_length=self.args.max_length)
                 if self.args.use_pretrained:
-                    padded_text, span = self.padding_text(padded_text)
+                    padded_text, span = self.padding_text(padded_text,
+                                                          char_level=not self.args.word_level_pretrained)
                 text_var = self._cuda(torch.LongTensor(padded_text))
                 if self.args.use_pretrained:
                     text_var = (text_var, span)
@@ -369,7 +391,8 @@ class Processor(object):
 
             if self.args.use_pretrained:
                 sent_list.extend(padded_text)
-                padded_text, span = self.padding_text(padded_text)
+                padded_text, span = self.padding_text(padded_text,
+                                                      char_level=not self.args.word_level_pretrained)
                 var_text = self._cuda(torch.LongTensor(padded_text))
                 var_text = (var_text, span)
             else:
