@@ -121,6 +121,10 @@ class Processor(object):
                 tokens = [t for t in self.tokenizer.convert_ids_to_tokens(tokenized_texts["input_ids"][i]) if t not in [
                     self.tokenizer.pad_token, self.tokenizer.cls_token, self.tokenizer.sep_token]]
                 assert token_idx == len(tokens), f"token length {token_idx} does not match text length {len(tokens)}: '{text_sequences[i]}' -> '{tokens}'"
+                if self.args.model_type == 'XLNet':
+                    # XLNet regular tokenization: input_ids + sep_token + cls_token
+                    if len(char_token_mappings[-1]) == len(text_sequences[i]) + 1:
+                        char_token_mappings[-1] = char_token_mappings[-1][1:]
                 # TODO: how to represent whitespaces
                 # '我想用 iPad 搜索古龙的 离别钩' -> [(0, 1), (1, 2), (2, 3), (4, 8), (9, 10), (10, 11), (11, 12), (12, 13), (13, 14), (15, 16), (16, 17), (17, 18)]
                 assert len(text_sequences[i]) == len(char_token_mappings[-1]), \

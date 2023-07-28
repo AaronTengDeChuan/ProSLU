@@ -154,8 +154,13 @@ class ModelManager(nn.Module):
         if self.args.use_pretrained:
             [word_tensor, span] = text
             hiddens = self.encoder(word_tensor)
-            sent_rep = hiddens[:, 0]
-            hiddens = hiddens[:, 1:-1]
+            if self.args.model_type == 'XLNet' and self.args.word_level_pretrained:
+                # XLNet regular tokenization: input_ids + sep_token + cls_token
+                sent_rep = hiddens[:, -1]
+                hiddens = hiddens[:, :-2]
+            else:
+                sent_rep = hiddens[:, 0]
+                hiddens = hiddens[:, 1:-1]
             hiddens = self.match_token(hiddens, span, seq_lens)
         else:
             word_tensor = self.embedding(text)
