@@ -177,8 +177,8 @@ class ModelManager(nn.Module):
             up_emb = self.encoder_up(up_var)
             ca_emb = self.encoder_ca(ca_var)
             info_emb_intent = self.fusion(sent_rep.unsqueeze(1), kg_emb, up_emb, ca_emb).squeeze(1)
-            # info_emb_slot = self.fusion(hiddens, kg_emb, up_emb, ca_emb)
-            info_emb_slot = info_emb_intent.unsqueeze(1).expand(-1, hiddens.size(1), -1)
+            info_emb_slot = self.fusion(hiddens, kg_emb, up_emb, ca_emb)
+            # info_emb_slot = info_emb_intent.unsqueeze(1).expand(-1, hiddens.size(1), -1)
 
         if self.args.use_info:
             sent_rep = torch.cat([sent_rep, info_emb_intent], dim=-1)
