@@ -14,6 +14,13 @@ Accepted performance: slot_f1=0.8154205607476634 ; intent_acc=0.832391713747646 
 JOBID-12423
 Accepted performance: slot_f1=0.8173862310385065 ; intent_acc=0.839924670433145 ; sent_acc=0.7871939736346516 at test dataset;
 Accepted performance: slot_f1=0.8230140186915889 ; intent_acc=0.8342749529190208 ; sent_acc=0.7928436911487758 at test dataset;
+JOBID-12452 (clip=10, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.8206775700934579 ; intent_acc=0.8248587570621468 ; sent_acc=0.7815442561205274 at test dataset;
+Accepted performance: slot_f1=0.8385964912280702 ; intent_acc=0.8493408662900188 ; sent_acc=0.8116760828625236 at test dataset;
+JOBID-12456 (clip=None, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.8173862310385065 ; intent_acc=0.839924670433145 ; sent_acc=0.7871939736346516 at test dataset;
+Accepted performance: slot_f1=0.8230140186915889 ; intent_acc=0.8342749529190208 ; sent_acc=0.7928436911487758 at test dataset;
+
 
 General SLU Model ++ ELECTRA with regular tokenization
 Accepted performance: slot_f1=0.8258328462887201 ; intent_acc=0.839924670433145 ; sent_acc=0.8116760828625236 at test dataset;
@@ -45,3 +52,15 @@ Accepted performance: slot_f1=0.759508484493856 ; intent_acc=0.8041431261770244 
 JOBID-12427
 Accepted performance: slot_f1=0.8277274056741738 ; intent_acc=0.8531073446327684 ; sent_acc=0.7721280602636534 at test dataset;
 Accepted performance: slot_f1=0.8076023391812867 ; intent_acc=0.832391713747646 ; sent_acc=0.7702448210922788 at test dataset;
+JOBID-12449 (bs=8, clip=10, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.8155510084770535 ; intent_acc=0.832391713747646 ; sent_acc=0.775894538606403 at test dataset;
+Accepted performance: slot_f1=0.8023357664233577 ; intent_acc=0.8305084745762712 ; sent_acc=0.7532956685499058 at test dataset;
+JOBID-12451 (bs=16, clip=10, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.7970717423133237 ; intent_acc=0.8455743879472694 ; sent_acc=0.7457627118644068 at test dataset;
+Accepted performance: slot_f1=0.8097047646886876 ; intent_acc=0.8286252354048964 ; sent_acc=0.7721280602636534 at test dataset;
+JOBID-12461 (bs=8, clip=None, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.804099560761347 ; intent_acc=0.832391713747646 ; sent_acc=0.7627118644067796 at test dataset;
+Accepted performance: slot_f1=0.7669789227166277 ; intent_acc=0.8060263653483992 ; sent_acc=0.7382297551789078 at test dataset;
+JOBID-12465 (bs=16, clip=None, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.8183948447568834 ; intent_acc=0.8436911487758946 ; sent_acc=0.7777777777777778 at test dataset;
+Accepted performance: slot_f1=0.8177829774787949 ; intent_acc=0.839924670433145 ; sent_acc=0.7702448210922788 at test dataset;
