@@ -53,12 +53,19 @@ class Processor(object):
                  'weight_decay': 0.01}
             ]
             self.optimizer_bert = AdamW(optimizer_grouped_parameters, lr=args.bert_learning_rate)
+            self.bert_lr_scheduler = lr_scheduler.ReduceLROnPlateau(
+                self.optimizer_bert , mode='max', factor=0.5,
+                patience=5, min_lr=1e-5, verbose=True)
 
         else:
             self.optimizer = optim.Adam(
                 self.model.parameters(), lr=self.args.learning_rate,
                 weight_decay=self.args.l2_penalty
             )
+
+        self.lr_scheduler = lr_scheduler.ReduceLROnPlateau(
+            self.optimizer, mode='max', factor=0.5,
+            patience=5, min_lr=1e-4, verbose=True)
 
         if self.load_dir:
             mylogger.info("MODEL {} LOADED".format(str(self.load_dir)))
@@ -163,6 +170,21 @@ class Processor(object):
         else:
             return x
 
+    def apply_scheduler(self, metric):
+        def _get_lr(optimizer):
+            for param_group in optimizer.param_groups:
+                return param_group['lr']
+
+        schedulers = [["base", self.optimizer, self.lr_scheduler],
+                      ["bert", self.optimizer_bert, self.bert_lr_scheduler] if self.args.use_pretrained else [None, None, None]]
+        for name, opt, scheduler in schedulers:
+            if scheduler is not None:
+                old_lr = [_get_lr(opt), _get_lr(scheduler.optimizer)]
+                scheduler.step(metric)
+                new_lr = [_get_lr(opt), _get_lr(scheduler.optimizer)]
+                if old_lr != new_lr:
+                    mylogger.info(f"Learning rate of '{name}' changes from {old_lr} to {new_lr}.")
+
     def train(self):
         best_dev_sent = 0.0
         no_improve, step = 0, 0
@@ -227,6 +249,7 @@ class Processor(object):
                 if self.args.use_pretrained:
                     self.optimizer_bert.zero_grad()
                 batch_loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 10)
                 self.optimizer.step()
                 if self.args.use_pretrained:
                     self.optimizer_bert.step()
@@ -242,6 +265,8 @@ class Processor(object):
                 "dev acc": dev_acc,
                 "dev sent acc": dev_sent_acc,
             }}, step=epoch + 1)
+            # apply lr scheduler
+            self.apply_scheduler(dev_sent_acc)
 
             if dev_sent_acc > best_dev_sent:
                 fitlog.add_best_metric({"dev": {
