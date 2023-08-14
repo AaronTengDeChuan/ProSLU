@@ -1,7 +1,6 @@
 import math
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.optim import lr_scheduler
 from torch.nn.utils.rnn import pack_padded_sequence
 from torch.nn.utils.rnn import pad_packed_sequence
 from transformers import BertConfig, BertModel

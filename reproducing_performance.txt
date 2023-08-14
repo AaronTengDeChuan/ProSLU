@@ -10,7 +10,10 @@ Accepted performance: slot_f1=0.8133216476774758 ; intent_acc=0.8380414312617702
 Accepted performance: slot_f1=0.8200641586468358 ; intent_acc=0.847457627118644 ; sent_acc=0.7909604519774012 at test dataset;
 bs=16
 Accepted performance: slot_f1=0.8230140186915889 ; intent_acc=0.8342749529190208 ; sent_acc=0.7928436911487758 at test dataset;
-
+Accepted performance: slot_f1=0.8154205607476634 ; intent_acc=0.832391713747646 ; sent_acc=0.800376647834275 at test dataset;
+JOBID-12423
+Accepted performance: slot_f1=0.8173862310385065 ; intent_acc=0.839924670433145 ; sent_acc=0.7871939736346516 at test dataset;
+Accepted performance: slot_f1=0.8230140186915889 ; intent_acc=0.8342749529190208 ; sent_acc=0.7928436911487758 at test dataset;
 
 General SLU Model ++ ELECTRA with regular tokenization
 Accepted performance: slot_f1=0.8258328462887201 ; intent_acc=0.839924670433145 ; sent_acc=0.8116760828625236 at test dataset;
@@ -34,3 +37,11 @@ Accepted performance: slot_f1=0.804099560761347 ; intent_acc=0.8229755178907722 
 Accepted performance: slot_f1=0.743124634289058 ; intent_acc=0.7721280602636534 ; sent_acc=0.7137476459510358 at test dataset;
 Accepted performance: slot_f1=0.8155737704918034 ; intent_acc=0.8531073446327684 ; sent_acc=0.775894538606403 at test dataset;
 bs=16
+Accepted performance: slot_f1=0.8008189529102078 ; intent_acc=0.8380414312617702 ; sent_acc=0.7551789077212806 at test dataset;
+Accepted performance: slot_f1=0.7746850278347495 ; intent_acc=0.8135593220338984 ; sent_acc=0.7419962335216572 at test dataset;
+JOBID-12424
+Accepted performance: slot_f1=0.8153350892595844 ; intent_acc=0.8436911487758946 ; sent_acc=0.7627118644067796 at test dataset;
+Accepted performance: slot_f1=0.759508484493856 ; intent_acc=0.8041431261770244 ; sent_acc=0.7288135593220338 at test dataset;
+JOBID-12427
+Accepted performance: slot_f1=0.8277274056741738 ; intent_acc=0.8531073446327684 ; sent_acc=0.7721280602636534 at test dataset;
+Accepted performance: slot_f1=0.8076023391812867 ; intent_acc=0.832391713747646 ; sent_acc=0.7702448210922788 at test dataset;
