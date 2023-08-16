@@ -20,7 +20,9 @@ Accepted performance: slot_f1=0.8385964912280702 ; intent_acc=0.8493408662900188
 JOBID-12456 (clip=None, lr_factor=0.5, lr_patience=5)
 Accepted performance: slot_f1=0.8173862310385065 ; intent_acc=0.839924670433145 ; sent_acc=0.7871939736346516 at test dataset;
 Accepted performance: slot_f1=0.8230140186915889 ; intent_acc=0.8342749529190208 ; sent_acc=0.7928436911487758 at test dataset;
-
+JOBID-12692 (dr=0.2, clip=10, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.793465577596266 ; intent_acc=0.8229755178907722 ; sent_acc=0.775894538606403 at test dataset;
+Accepted performance: slot_f1=0.7867990654205608 ; intent_acc=0.8041431261770244 ; sent_acc=0.7721280602636534 at test dataset;
 
 General SLU Model ++ ELECTRA with regular tokenization
 Accepted performance: slot_f1=0.8258328462887201 ; intent_acc=0.839924670433145 ; sent_acc=0.8116760828625236 at test dataset;
@@ -64,3 +66,6 @@ Accepted performance: slot_f1=0.7669789227166277 ; intent_acc=0.8060263653483992
 JOBID-12465 (bs=16, clip=None, lr_factor=0.5, lr_patience=5)
 Accepted performance: slot_f1=0.8183948447568834 ; intent_acc=0.8436911487758946 ; sent_acc=0.7777777777777778 at test dataset;
 Accepted performance: slot_f1=0.8177829774787949 ; intent_acc=0.839924670433145 ; sent_acc=0.7702448210922788 at test dataset;
+JOBID-12691 (dr=0.2, bs=16, clip=10, lr_factor=0.5, lr_patience=5)
+Accepted performance: slot_f1=0.8072535829189821 ; intent_acc=0.8342749529190208 ; sent_acc=0.7645951035781544 at test dataset;
+Accepted performance: slot_f1=0.7598713073998244 ; intent_acc=0.7947269303201506 ; sent_acc=0.71939736346516 at test dataset;
