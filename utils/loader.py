@@ -280,6 +280,20 @@ class DatasetManager(object):
             self.digit_slot_data[data_name] = self.slot_alphabet.get_index(slot)
             self.digit_intent_data[data_name] = self.intent_alphabet.get_index(intent)
 
+    def remove_intent_from_slot(self, slots, intent):
+        new_slots = []
+        for slot in slots:
+            fields = slot.split('-')
+            assert 0 < len(fields) <= 2, f"tag format wrong. it must be B-xxx.xxx or O, but got '{slot}'."
+            if len(fields) == 1:
+                # O
+                new_slots.append(slot)
+                continue
+            intent_name, slot_name = fields[1].split('.')
+            assert intent_name == intent, f"intent name '{intent_name}' in slot '{slot}' does not match '{intent}'."
+            new_slots.append(f"{fields[0]}-{slot_name}")
+        return new_slots
+
     def read_info_file(self, file_path):
         with open(file_path, 'r') as fr:
             data = json.load(fr)
@@ -296,7 +310,10 @@ class DatasetManager(object):
             for id in ids:
                 kgs.append([i for i in data[id]['KG']])
                 texts.append(list(data[id]['用户话语']))
-                slots.append(data[id]['slot'])
+
+                slot = data[id]['slot'] if "slot_without_intent" not in self.args or not self.args.slot_without_intent \
+                    else self.remove_intent_from_slot(data[id]['slot'], data[id]['intent'])
+                slots.append(slot)
                 intents.append([data[id]['intent']])
                 if kgs[-1] == []:
                     kgs[-1] = [' ']
